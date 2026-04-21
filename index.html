@@ -18,6 +18,201 @@
         min-height: 100vh;
     }
 
-    .content {
+   .content {
         max-width: 800px;
-        margin: 60
+        margin: 60px auto;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+        color: #666;
+    }
+
+   .cookie-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+        padding: 25px 20px;
+        z-index: 9999;
+        transform: translateY(100%);
+        transition: transform 0.4s ease;
+    }
+
+   .cookie-banner.show {
+        transform: translateY(0);
+    }
+
+   .cookie-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+   .cookie-text {
+        flex: 1;
+        min-width: 300px;
+    }
+
+   .cookie-text h3 {
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+
+   .cookie-text p {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+   .cookie-buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+   .cookie-btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+   .cookie-accept {
+        background: #007aff;
+        color: white;
+    }
+
+   .cookie-accept:hover {
+        background: #0051d5;
+    }
+
+   .cookie-decline {
+        background: #e5e5e7;
+        color: #333;
+    }
+
+   .cookie-decline:hover {
+        background: #d1d1d6;
+    }
+
+   .cookie-close {
+        background: transparent;
+        color: #999;
+        font-size: 28px;
+        line-height: 1;
+        padding: 0 8px;
+    }
+
+   .cookie-close:hover {
+        color: #333;
+    }
+</style>
+</head>
+<body>
+    <div class="content">
+        <h1>Willkommen bei Super Wichtige Website AG</h1>
+        <p>Wir sind ein innovatives Tech-Unternehmen mit Fokus auf Synergie-Effekte und disruptiver Innovation im B2B-Segment.</p>
+        <p>Unsere Core-Competencies liegen in der holistischen Optimierung von Customer-Journeys durch agile Methodologies und state-of-the-art Blockchain-Integration.</p>
+        <p>Kontaktieren Sie uns noch heute für ein unverbindliches Beratungsgespräch über Ihre digitale Transformation.</p>
+    </div>
+
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <h3 id="cookieTitle">Diese Website verwendet Cookies</h3>
+                <p id="cookieDesc">Wir nutzen Cookies, um dein Erlebnis zu verbessern. Durch die Nutzung unserer Website stimmst du dem zu.</p>
+            </div>
+            <div class="cookie-buttons">
+                <button class="cookie-btn cookie-decline" onclick="trollClick()">Ablehnen</button>
+                <button class="cookie-btn cookie-accept" onclick="trollClick()">Alle akzeptieren</button>
+                <button class="cookie-btn cookie-close" onclick="trollClick()">×</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let clickCount = 0;
+    let konamiIndex = 0;
+    let unlocked = false;
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    const banner = document.getElementById('cookieBanner');
+    const title = document.getElementById('cookieTitle');
+    const desc = document.getElementById('cookieDesc');
+
+    // Banner nach 500ms einblenden
+    setTimeout(() => {
+        banner.classList.add('show');
+    }, 500);
+
+    function trollClick() {
+        if (unlocked) {
+            banner.classList.remove('show');
+            return;
+        }
+
+        clickCount++;
+
+        // Banner kurz ausblenden und wieder einblenden
+        banner.classList.remove('show');
+
+        setTimeout(() => {
+            // Texte ändern je nach Klick-Anzahl
+            if (clickCount === 2) {
+                title.textContent = 'Bist du sicher?';
+                desc.textContent = 'Wir brauchen die Cookies wirklich. Für dich.';
+            } else if (clickCount === 3) {
+                title.textContent = 'Komm schon...';
+                desc.textContent = 'Alle anderen klicken auch auf Akzeptieren.';
+            } else if (clickCount === 4) {
+                title.textContent = 'Jetzt wirds kindisch';
+                desc.textContent = 'Du kannst klicken so oft du willst.';
+            } else if (clickCount >= 5) {
+                title.textContent = 'Bro gib auf, ich will deine Cookies';
+                desc.textContent = 'Tipp: Probier mal ↑↑↓↓←→←→BA auf deiner Tastatur';
+            }
+
+            banner.classList.add('show');
+        }, 300);
+    }
+
+    // Konami-Code Listener
+    document.addEventListener('keydown', (e) => {
+        if (unlocked) return;
+
+        if (e.key === konamiCode[konamiIndex]) {
+            konamiIndex++;
+            if (konamiIndex === konamiCode.length) {
+                // Freigeschaltet!
+                unlocked = true;
+                title.textContent = 'Okay okay, du hast gewonnen';
+                desc.textContent = 'Respekt für den Konami-Code. Banner verschwindet jetzt...';
+
+                setTimeout(() => {
+                    banner.classList.remove('show');
+                }, 1500);
+            }
+        } else {
+            konamiIndex = 0; // Reset bei falscher Taste
+        }
+    });
+</script>
+</body>
+</html>
